@@ -66,5 +66,28 @@ WHERE `prenotazioni`.`created_at` LIKE '2018-05%'
 
 
 ● Fai la somma di tutti i prezzi delle prenotazioni per le stanze del primo piano
+
+  SELECT SUM(`price`) AS `Somma prezzi stanze del primo piano` FROM `pagamenti`
+INNER JOIN `prenotazioni`
+ON `prenotazioni`.`id` = `pagamenti`.`prenotazione_id`
+INNER JOIN `stanze`
+ON `stanze`.`id` = `prenotazioni`.`stanza_id`
+WHERE `stanze`.`floor` = 1
+
+
 ● Prendi i dati di fatturazione per la prenotazione con id=7
+
+  SELECT `paganti`.`name` AS `Nome`, `paganti`.`lastname` AS `Cognome`, `paganti`.`address` AS `Indirizzo` FROM `prenotazioni`
+INNER JOIN `pagamenti`
+ON `pagamenti`.`prenotazione_id` = `prenotazioni`.`id`
+INNER JOIN `paganti`
+ON `paganti`.`id` = `pagamenti`.`pagante_id`
+WHERE `prenotazioni`.`id` = 7
+
+
 ● Le stanze sono state tutte prenotate almeno una volta? (Visualizzare le stanze non ancora prenotate)
+
+  SELECT `room_number` AS `Stanze senza prenotazioni` FROM `stanze`
+LEFT JOIN `prenotazioni`
+ON `stanze`.`id` = `prenotazioni`.`stanza_id`
+WHERE `prenotazioni`.`id` IS NULL
